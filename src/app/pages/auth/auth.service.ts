@@ -30,4 +30,14 @@ export class AuthService {
     return this.http.post(`${environment.apiUrl}auth/register`, {credentials});
   }
 
+  logout() {
+    if (sessionStorage.getItem('user') && sessionStorage.getItem('auth_token')) {
+      sessionStorage.removeItem('user');
+      sessionStorage.removeItem('auth_token');
+      window.location.reload();
+    }
+
+    return this.http.post(`${environment.apiUrl}auth/logout`, {});
+  }
+
 }

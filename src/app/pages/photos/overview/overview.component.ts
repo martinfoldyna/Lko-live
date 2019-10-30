@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {PhotosService} from "../photos.service";
 
 @Component({
   selector: 'ngx-overview',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OverviewComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private photoService: PhotosService
+  ) { }
 
   ngOnInit() {
+    this.photoService.download().subscribe(data => {
+      console.log(data);
+    }, err => {
+      console.log(err);
+    })
   }
 
 }

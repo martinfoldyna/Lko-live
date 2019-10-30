@@ -19,6 +19,7 @@ import {
   NbSidebarModule,
   NbToastrModule,
   NbWindowModule,
+  NbLayoutModule,
 } from '@nebular/theme';
 import {NbEvaIconsModule} from "@nebular/eva-icons";
 import {HttpHeaderInterceptor} from "./@core/utils/HttpInterceptor";
@@ -31,7 +32,6 @@ import {HttpHeaderInterceptor} from "./@core/utils/HttpInterceptor";
     HttpClientModule,
     AppRoutingModule,
     ThemeModule.forRoot(),
-
     NbSidebarModule.forRoot(),
     NbMenuModule.forRoot(),
     NbDatepickerModule.forRoot(),

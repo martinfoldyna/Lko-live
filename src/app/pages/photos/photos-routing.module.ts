@@ -2,6 +2,7 @@ import {RouterModule, Routes} from "@angular/router";
 import {PhotosComponent} from "./photos.component";
 import {AddPhotoComponent} from "./add-photo/add-photo.component";
 import {NgModule} from "@angular/core";
+import {OverviewComponent} from "./overview/overview.component";
 
 
 const routes: Routes = [
@@ -13,6 +14,10 @@ const routes: Routes = [
         path: 'add',
         component: AddPhotoComponent,
       },
+      {
+        path: 'overview',
+        component: OverviewComponent,
+      }
     ],
   },
 

@@ -2,6 +2,7 @@
 /dist
 /tmp
 /out-tsc
+.github
 
 # dependencies
 /node_modules

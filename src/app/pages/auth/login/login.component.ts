@@ -1,43 +1,52 @@
 import { Component, OnInit } from '@angular/core';
-import {NbAuthSocialLink, NbLoginComponent} from '@nebular/auth';
-import {HttpClient} from '@angular/common/http';
 import {AuthService} from '../auth.service';
-import {User} from "../../../@core/data/users";
 import {Router} from "@angular/router";
 
 @Component({
   selector: 'ngx-login',
   templateUrl: './login.component.html',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   user: any;
-  redirectDelay: number;
-  showMessages: any;
-  strategy: string;
   errors: string[];
   messages: string[];
   submitted: boolean;
-  socialLinks: NbAuthSocialLink[];
-  rememberMe: boolean;
 
-
+  ngOnInit(): void {
+    if (localStorage.getItem('rememberUser')) {
+      const rememberedUser = localStorage.getItem('rememberUser');
+      this.user = rememberedUser;
+    }
+  }
 
   constructor(
     private authService: AuthService,
     private router: Router,
   ) {
     this.user = {
-
+      rememberMe: false
     }
+  }
+
+  checkValue() {
+    console.log(this.user);
+  }
+
+  rememberUser(user) {
+    localStorage.setItem('rememberUser', JSON.stringify(user));
   }
 
   login() {
     console.log(this.user);
     this.authService.login(this.user).subscribe(data => {
+      console.log(this.user.rememberMe);
+      if (this.user.rememberMe) {
+        this.rememberUser({username: this.user.username, password: this.user.password});
+      }
       console.log('GOT DATA', data)
       if (data["token"]) {
-        localStorage.setItem('auth_token', data["token"]);
-        localStorage.setItem('user', data["user"])
+        sessionStorage.setItem('auth_token', data["token"]);
+        sessionStorage.setItem('user', JSON.stringify(data["user"]))
         this.router.navigateByUrl('/pages/dashboard');
       } else {
         console.log('error');

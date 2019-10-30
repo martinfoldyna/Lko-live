@@ -2,10 +2,47 @@
   <div class="col-md-12">
     <nb-card>
       <nb-card-header>
-        Add new photo
+        Nahrajte nové obrázky
       </nb-card-header>
       <nb-card-body>
-        Hello world
+        <form #form="ngForm" (ngSubmit)="upload($event)">
+          <div class="form-group">
+            <label class="label" for="input-title">Popis:</label>
+            <input nbInput
+                   fullWidth
+                   ngModel
+                   [(ngModel)]="photo.title"
+                   name="title"
+                   id="input-title"
+                   placeholder="Popisu obrázku"
+                   autofocus>
+          </div>
+          <div class="form-group">
+            <label class="label" for="input-files">Vyberte obrázky, které chcete nahrát:</label>
+            <input type="file"
+                   nbInput
+                   multiple
+                   id="input-files"
+                   name="files"
+                   accept="image/*"
+                   (change)="filesSelected($event)">
+          </div>
+<!--          <div class="form-group">-->
+<!--            <label for="input-description">-->
+<!--              <textarea-->
+<!--                fullWidth-->
+<!--                id="input-description"-->
+<!--                [(ngModel)]="photo.description"-->
+<!--              ></textarea>-->
+<!--            </label>-->
+<!--          </div>-->
+
+          <button class="uploadButton" nbButton fullWidth status="success" [disabled]="!form.valid">
+            Nahrát
+          </button>
+
+        </form>
+        <img src="{{photo.files.files}}" alt="" *ngIf="photo.files">
       </nb-card-body>
     </nb-card>
   </div>

@@ -22,7 +22,7 @@ export class AuthService {
   }
 
   loadToken() {
-    const token = localStorage.getItem('auth_token');
+    const token = sessionStorage.getItem('auth_token');
     console.log(token);
     return token ? token : false;
   }
