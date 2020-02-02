@@ -10,14 +10,19 @@ import {
   NbCardModule,
   NbCheckboxModule,
   NbInputModule,
-  NbLayoutModule
+  NbLayoutModule, NbSpinnerModule,
+  NbIconModule,
+  NbUserModule
 } from "@nebular/theme";
 import { OverviewComponent } from './overview/overview.component';
 import {FormsModule} from "@angular/forms";
 import {NgxImageCompressService} from "ngx-image-compress";
+import {ArticlesModule} from "../articles/articles.module";
+import { ImageCardComponent } from './image-card/image-card.component';
+import { LightboxComponent } from './lightbox/lightbox.component';
 
 @NgModule({
-  declarations: [PhotosComponent, AddPhotoComponent, OverviewComponent],
+  declarations: [PhotosComponent, AddPhotoComponent, OverviewComponent, ImageCardComponent, LightboxComponent],
   imports: [
     CommonModule,
     PhotosRoutingModule,
@@ -29,7 +34,18 @@ import {NgxImageCompressService} from "ngx-image-compress";
     NbCheckboxModule,
     NbLayoutModule,
     NbActionsModule,
+    NbIconModule,
+    NbSpinnerModule,
+    NbUserModule,
+    ArticlesModule,
   ],
-  providers: [NgxImageCompressService]
+  exports: [
+    ImageCardComponent,
+    AddPhotoComponent
+  ],
+  providers: [NgxImageCompressService],
+  entryComponents: [
+    LightboxComponent
+  ]
 })
 export class PhotosModule { }

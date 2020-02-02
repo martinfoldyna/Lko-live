@@ -1,0 +1,10 @@
+<nb-card>
+  <nb-card-header>
+    {{image.filename}}</nb-card-header>
+  <nb-card-body>
+    <img src="data:image/jpg;base64,{{image.base64}}" alt="">
+  </nb-card-body>
+  <nb-card-footer *ngIf="image.createdBy">
+    <nb-user [name]="image.createdBy.name" [picture]="image.createdBy.picture"></nb-user>
+  </nb-card-footer>
+</nb-card>

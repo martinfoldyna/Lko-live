@@ -1,7 +1,7 @@
 import {HttpInterceptor, HttpRequest, HttpHandler, HttpEvent} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {HttpHeaders} from "@angular/common/http";
-import {AuthService} from "../../pages/auth/auth.service";
+import {LocalAuthService} from "../../pages/auth/auth.service";
 
 export class HttpHeaderInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -9,7 +9,7 @@ export class HttpHeaderInterceptor implements HttpInterceptor {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        'Authorization': 'JWT ' + AuthService.getToken()
+        'Authorization': 'JWT ' + LocalAuthService.getToken()
 
       })
     });

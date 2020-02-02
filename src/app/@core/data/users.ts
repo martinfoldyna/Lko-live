@@ -2,9 +2,24 @@ import { Observable } from 'rxjs';
 
 export interface User {
   name: string;
+  username: string;
+  email: string;
   picture: string;
+}
+
+export interface AuthenticationUser {
+  name: string;
+  username: string;
   email: string;
   password: string;
+  rePassword: string;
+}
+
+export interface GoogleUser {
+  name: string;
+  email: string;
+  picture: string;
+  token: string;
 }
 
 export interface Contacts {
@@ -21,3 +36,4 @@ export abstract class UserData {
   abstract getContacts(): Observable<Contacts[]>;
   abstract getRecentUsers(): Observable<RecentUsers[]>;
 }
+

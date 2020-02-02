@@ -22,6 +22,29 @@
            id="input-name"
            name="fullName"
            placeholder="Full name"
+           [(ngModel)] = "user.name"
+           autofocus
+           fullWidth
+           fieldSize="large">
+<!--    <ng-container *ngIf="fullName.invalid && fullName.touched">-->
+<!--      <p class="caption status-danger" *ngIf="fullName.errors?.required">-->
+<!--        Full name is required!-->
+<!--      </p>-->
+<!--      <p class="caption status-danger" *ngIf="fullName.errors?.minlength || fullName.errors?.maxlength">-->
+<!--        Full name should contains-->
+<!--        from-->
+<!--        to-->
+<!--        characters-->
+<!--      </p>-->
+<!--    </ng-container>-->
+  </div>
+  <div class="form-control-group">
+    <label class="label" for="input-username">Uživatelské jméno:</label>
+    <input nbInput
+           id="input-username"
+           name="username"
+           placeholder="Uživatelské jméno"
+           [(ngModel)] = "user.username"
            autofocus
            fullWidth
            fieldSize="large">
@@ -42,6 +65,7 @@
     <label class="label" for="input-email">Email address:</label>
     <input nbInput
            id="input-email"
+           [(ngModel)] = "user.email"
            name="email"
            pattern=".+@.+..+"
            placeholder="Email address"
@@ -54,6 +78,7 @@
     <input nbInput
            type="password"
            id="input-password"
+           [(ngModel)] = "user.password"
            name="password"
            placeholder="Password"
            fullWidth
@@ -77,6 +102,7 @@
            type="password"
            id="input-re-password"
            name="rePass"
+           [(ngModel)] = "user.rePassword"
            placeholder="Confirm Password"
            fullWidth
            fieldSize="large">
@@ -90,16 +116,11 @@
 <!--    </ng-container>-->
   </div>
 
-  <div class="form-control-group accept-group">
-    <nb-checkbox name="terms">
-      Agree to <a href="#" target="_blank"><strong>Terms & Conditions</strong></a>
-    </nb-checkbox>
-  </div>
-
   <button nbButton
           fullWidth
           status="primary"
-          size="large">
+          size="large"
+          [disabled]="!form.valid" >
     Register
   </button>
 </form>

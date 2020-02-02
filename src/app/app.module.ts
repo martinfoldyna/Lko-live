@@ -21,8 +21,20 @@ import {
   NbWindowModule,
   NbLayoutModule,
 } from '@nebular/theme';
-import {NbEvaIconsModule} from "@nebular/eva-icons";
-import {HttpHeaderInterceptor} from "./@core/utils/HttpInterceptor";
+import {MsalModule} from "@azure/msal-angular";
+import {OAuthSettings} from "../oauth";
+import {AuthService, AuthServiceConfig, GoogleLoginProvider} from "angularx-social-login";
+export function socialConfigs() {
+  const config = new AuthServiceConfig(
+    [
+      {
+        id: GoogleLoginProvider.PROVIDER_ID,
+        provider: new GoogleLoginProvider('63183198040-t7kq60occjo8uqpc60bmasg6g0s2r42p.apps.googleusercontent.com')
+      }
+    ]
+  );
+  return config;
+}
 
 @NgModule({
   declarations: [AppComponent],
@@ -42,8 +54,18 @@ import {HttpHeaderInterceptor} from "./@core/utils/HttpInterceptor";
       messageGoogleMapKey: 'AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY',
     }),
     CoreModule.forRoot(),
+    MsalModule.forRoot({
+      clientID: OAuthSettings.appId
+    })
   ],
   bootstrap: [AppComponent],
+  providers: [
+    AuthService,
+    {
+      provide: AuthServiceConfig,
+      useFactory: socialConfigs
+    }
+  ]
 
 
 })

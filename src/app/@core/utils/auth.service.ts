@@ -23,7 +23,6 @@ export class AuthService {
 
   loadToken() {
     const token = sessionStorage.getItem('auth_token');
-    console.log(token);
     return token ? token : false;
   }
 

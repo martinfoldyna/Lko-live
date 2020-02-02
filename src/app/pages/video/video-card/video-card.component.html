@@ -1,0 +1,23 @@
+<div class="infinite-cards row">
+  <div class="own-scroll col-md-12 col-lg-6 col-xxxl-6" *ngFor="let video of allVideos">
+    <nb-card>
+      <nb-card-header>
+
+        <a [href]=video.url target="_blank" *ngIf="!video.thumbnail">{{video.url}}</a>
+        <a [href]=video.url target="_blank" *ngIf="video.thumbnail.data"><img src="data:image/jpg;base64,{{video.thumbnail.data}}" alt="" ></a>
+        <!--        <iframe width="640" height="360" [src]=article.url allowfullscreen style="border:none;"></iframe>-->
+        <!--        <iframe *ngIf="article.url" width="100%" height="260px" src="https://web.microsoftstream.com/embed/video/d6651c25-7355-417c-b531-e408533b92d0?autoplay=false&amp;showinfo=true" allowfullscreen style="border:none;"></iframe>-->
+        <!--        <iframe *ngIf="article.url" width="100%" height="260px" [src]=convertUrlToIframe('article.url') allowfullscreen style="border:none;"></iframe>-->
+          <nb-icon icon="play-circle-outline" pack="eva" status="primary" style="cursor: pointer"></nb-icon>
+      </nb-card-header>
+
+      <nb-card-footer>
+        <h2>{{video.title}}</h2>
+        <nb-icon icon="trash-2-outline" pack="eva" status="danger" class="header-icon " (click)="deleteVideo(video._id)" style="cursor: pointer"></nb-icon>
+        <p class="label">Vytvořeno: {{video.createdBy.name}} - {{video.createdAt | amLocal | amDateFormat: "DD.MM.YYYY"}} </p>
+        <p class="label" *ngIf="video.updatedBy">Naposledy upraveno: {{video.updatedBy.name}} - {{video.updatedAt | amLocal | amDateFormat: "DD.MM.YYYY"}}</p>
+      </nb-card-footer>
+    </nb-card>
+  </div>
+</div>
+

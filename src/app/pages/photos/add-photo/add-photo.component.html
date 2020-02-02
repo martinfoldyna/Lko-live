@@ -1,10 +1,5 @@
-<div class="row">
-  <div class="col-md-12">
-    <nb-card>
-      <nb-card-header>
-        Nahrajte nové obrázky
-      </nb-card-header>
-      <nb-card-body>
+
+
         <form #form="ngForm" (ngSubmit)="upload($event)">
           <div class="form-group">
             <label class="label" for="input-title">Popis:</label>
@@ -42,9 +37,10 @@
           </button>
 
         </form>
-        <img src="{{photo.files.files}}" alt="" *ngIf="photo.files">
-      </nb-card-body>
-    </nb-card>
-  </div>
 
-</div>
+
+        <br><br> Original: Size: {{sizeOfOriginalImage | number : '1.2-2'}}MB
+        <br><img [src]="localUrl" height="200px">
+        <br><br><br> Compressed: Size: {{sizeOFCompressedImage | number : '1.2-2'}}MB<br>
+        <img [src]="localCompressedURl" height="150px">
+

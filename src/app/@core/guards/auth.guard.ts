@@ -20,3 +20,18 @@ export class AuthGuard implements CanActivate {
   }
 
 }
+
+@Injectable({
+  providedIn: 'root'
+})
+export class IsUserLoggedIn implements CanActivate {
+  constructor(private authService: AuthService, private router: Router) {}
+  canActivate(): boolean {
+    if(this.authService.isTokenValid()) {
+      this.router.navigate(['/pages/dashboard']);
+      return false;
+    } else {
+      return true;
+    }
+  }
+}

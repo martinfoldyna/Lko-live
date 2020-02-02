@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NbAuthSocialLink} from "@nebular/auth";
-import {AuthService} from "../auth.service";
+import {LocalAuthService} from "../auth.service";
+import {AuthenticationUser} from "../../../@core/data/users";
 
 @Component({
   selector: 'ngx-register',
@@ -9,29 +10,39 @@ import {AuthService} from "../auth.service";
 })
 export class RegisterComponent implements OnInit {
 
-  redirectDelay: number;
-  showMessages: any;
-  strategy: string;
-  submitted: boolean;
   errors: string[];
   messages: string[];
-  user: any;
-  socialLinks: NbAuthSocialLink[];
+  user: AuthenticationUser;
 
 
   constructor(
-    private authService: AuthService,
-  ) { }
+    private authService: LocalAuthService,
+  ) {
+    this.user = {
+      name: "",
+      email: "",
+      username: "",
+      password: "",
+      rePassword: ""
+    }
+
+  }
 
   ngOnInit() {
   }
 
-  register(input) {
-    this.authService.register(input).subscribe(data => {
-      alert('got data');
-    }, (err) => {
-      console.log(err);
-    })
+  register(form) {
+    console.log('Validity:', form.valid);
+    console.log('Passwords:', this.user.password, '&&', this.user.rePassword);
+    if ((form.valid) && (this.user.password === this.user.rePassword)) {
+      this.authService.register(this.user).subscribe(data => {
+        alert('got data');
+      }, (err) => {
+        console.log(err);
+      });
+    } else {
+      console.log("form not valid");
+    }
   }
 
 }

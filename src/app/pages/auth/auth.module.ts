@@ -11,7 +11,9 @@ import {
   NbButtonModule,
   NbCheckboxModule,
   NbInputModule,
-  NbLayoutModule
+  NbLayoutModule,
+  NbIconModule,
+  NbSpinnerModule
 } from "@nebular/theme";
 import { RegisterComponent } from './register/register.component';
 import {NbEvaIconsModule} from "@nebular/eva-icons";
@@ -30,6 +32,8 @@ import {NbEvaIconsModule} from "@nebular/eva-icons";
     NbLayoutModule,
     NbActionsModule,
     NbAuthModule,
+    NbIconModule,
+    NbSpinnerModule
   ],
 })
 export class AuthModule { }

@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
 import { NewPhotoSet } from "../../../@core/data/photo";
 import {NgxImageCompressService} from "ngx-image-compress";
 import {PhotosService} from "../photos.service";
+import {Image} from "../../../@core/data/image";
+import {NbToastrService} from "@nebular/theme"
 
 @Component({
   selector: 'ngx-add-photo',
@@ -10,9 +12,13 @@ import {PhotosService} from "../photos.service";
 })
 export class AddPhotoComponent implements OnInit {
 
+  @Input() subject: string;
+
   photo: NewPhotoSet;
   //TODO: add Models!!
   filesArray = [];
+
+  compressFile;
 
 
   imgSrcBeforeCompress: string = "./../../../../assets/images/camera1.jpg";
@@ -21,6 +27,7 @@ export class AddPhotoComponent implements OnInit {
   constructor(
     private imageCompress: NgxImageCompressService,
     private photosService: PhotosService,
+    private toastr: NbToastrService
   ) {
     this.photo = {
       description: "",
@@ -53,7 +60,12 @@ export class AddPhotoComponent implements OnInit {
     let headers = new Headers();
     headers.append('enctype', 'multipart/form-data');
     // formData.append('title', this.photo.description);
-    formData.append('files', this.photo.files[0]);
+    console.log();
+    let photoFiles = this.photo.files;
+    for (let i = 0; i < photoFiles.length; i++) {
+      formData.append(`file${i}`, photoFiles[i]);
+    }
+    formData.append('subject', this.subject);
 
     this.photosService.upload(formData, headers).subscribe(data => {
       console.log(data);
@@ -63,6 +75,7 @@ export class AddPhotoComponent implements OnInit {
   }
 
   filesSelected(event) {
+      this.compressFile = event.target.files[0];
       const files = event.target.files;
       const filesLength = files.length;
 

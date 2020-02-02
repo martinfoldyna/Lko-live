@@ -1,0 +1,13 @@
+.article-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.header-icon {
+  margin: 0 7px;
+  font-size: 1.6rem !important;
+  transition: all .5s fade;
+  cursor: pointer;
+
+}

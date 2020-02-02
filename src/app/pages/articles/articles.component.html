@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-header>
+        Přidat příspěvek
+      </nb-card-header>
+      <nb-card-body>
+        <form #form="ngForm" (ngSubmit)="upload(textarea)">
+          <div class="form-group">
+            <label class="label" for="input-title">Nadpis:</label>
+            <input nbInput
+                   fullWidth
+                   ngModel
+                   name="title"
+                   id="input-title"
+                   placeholder="Nadpis příspěvku"
+                   [(ngModel)] = "article.title"
+                   autofocus
+                  autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="input-text" class="label" >Obsah:</label>
+            <textarea rows="5" nbInput fullWidth placeholder="Obsah příspěvku" id="input-text" #textarea></textarea>
+          </div>
+          <button class="uploadButton" nbButton fullWidth status="success" [disabled]="!form.valid" (click)="toggleLoadingMediumGroupAnimation()" [nbSpinner]="fetchingData">
+            Nahrát
+          </button>
+
+        </form>
+      </nb-card-body>
+
+    </nb-card>
+  </div>
+
+</div>
+<div class="infinite-cards row">
+    <ngx-article-card></ngx-article-card>
+</div>

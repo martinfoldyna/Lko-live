@@ -2,7 +2,7 @@
   <div class="col-md-12">
     <nb-card>
       <nb-card-header>
-        Vaše uživatelské informace
+        Uživatelské informace
       </nb-card-header>
       <nb-card-body>
         <form #form="ngForm" aria-labelledby="title">
@@ -12,7 +12,7 @@
               type="text"
               name="change-name"
               id="name"
-              [value]=user.name
+              [(ngModel)]=user.name
               [disabled]="!changeUserInfo"
               nbInput
               fullWidth>
@@ -23,8 +23,10 @@
               type="email"
               name="change-email"
               id="email"
-              [value]=user.email
+              pattern="/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/"
+              [(ngModel)]=user.email
               [disabled]="!changeUserInfo"
+              #email = "ngModel"
               nbInput
               fullWidth>
           </div>
@@ -34,7 +36,7 @@
               type="text"
               name="change-username"
               id="username"
-              [value]=user.username
+              [(ngModel)]=user.username
               [disabled]="!changeUserInfo"
               nbInput
               fullWidth>
@@ -43,14 +45,14 @@
                   fullWidth
                   status="primary"
                   (click)="changeUserInfo = !changeUserInfo"
-                  [hidden]="changeUserInfo"
-                  [disabled]="!form.valid">
+                  [hidden]="changeUserInfo">
             Změnit
           </button>
           <div class="actionButtons" [hidden]="!changeUserInfo">
               <button nbButton
                       fullWidth
-                      status="success">Odeslat</button>
+                      status="success"
+                      (click)="submitChanges(user, form)">Odeslat</button>
             </div>
             <div class="col-md-6">
               <button nbButton

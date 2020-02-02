@@ -4,7 +4,7 @@ import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeServ
 import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import {AuthService} from "../../../pages/auth/auth.service";
+import {LocalAuthService} from "../../../pages/auth/auth.service";
 import {UserService} from "../../../@core/utils/user.service";
 import {Router} from "@angular/router";
 
@@ -40,14 +40,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   currentTheme = 'default';
 
-  userMenu = [ { title: 'Profile', icon: 'person-outline' }, { title: 'Log out', icon: 'log-out-outline' } ];
+  userMenu = [ { title: 'Uživatelský profil', icon: 'person-outline' }, { title: 'Odhlásit se', icon: 'log-out-outline' } ];
 
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
               private themeService: NbThemeService,
               private layoutService: LayoutService,
               private breakpointService: NbMediaBreakpointsService,
-              private authService: AuthService,
+              private authService: LocalAuthService,
               private userService: UserService,
               private router: Router) {
   }
@@ -57,6 +57,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.userService.getUser().then(user => {
       this.user = user;
+      console.log(this.user);
     }).catch(err => {
       console.log(err);
     })
@@ -88,9 +89,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onContecxtItemSelection(icon) {
-    if(icon === 'log-out-outline') {
-
-    }
     switch (icon) {
       case 'log-out-outline':
         this.authService.logout().subscribe(data => {
@@ -100,7 +98,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         });
         break;
       case 'person-outline':
-        this.router.navigateByUrl('/pages/user');
+        // this.router.navigateByUrl('/pages/user');
         break;
       default:
         console.log('Something went wrong!');

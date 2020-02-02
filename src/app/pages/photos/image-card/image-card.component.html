@@ -1,0 +1,22 @@
+<div class="infinite-cards row">
+  <p *ngIf="!allImages">Žádné fotky nebyly nalezeny</p>
+  <div class="own-scroll col-md-12 col-lg-4 col-xxxl-4" *ngFor="let image of allImages">
+    <nb-card  *ngIf="imagesLoaded | async" >
+      <nb-card-header class="image-header">
+        {{image.filename}}
+        <div class="header-icons">
+          <nb-icon icon="trash-2-outline" pack="eva" status="danger" class="header-icon " (click)="deleteImage(image._id)" style="cursor: pointer"></nb-icon>
+        </div>
+      </nb-card-header>
+
+      <nb-card-body>
+        <img src="data:image/jpg;base64,{{image.base64}}" alt="" (click)="openImage(image)">
+      </nb-card-body>
+
+      <nb-card-footer>
+<!--        <p class="label">Vytvořeno: {{article.createdBy.name}} - {{article.createdAt | amLocal | amDateFormat: "DD.MM.YYYY v HH:MM"}} </p>-->
+<!--        <p class="label" *ngIf="article.updatedBy">Naposledy upraveno: {{article.updatedBy.name}} - {{article.updatedAt | amLocal | amDateFormat: "DD.MM.YYYY v HH:MM"}}</p>-->
+      </nb-card-footer>
+    </nb-card>
+  </div>
+</div>
