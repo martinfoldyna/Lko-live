@@ -5,11 +5,12 @@ import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import {LocalAuthService} from "../../../pages/auth/auth.service";
-import {UserService} from "../../../@core/utils/user.service";
+import {UserService} from "../../../pages/user/user.service";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'ngx-header',
+  selector: '' +
+    'ngx-header',
   styleUrls: ['./header.component.scss'],
   templateUrl: './header.component.html',
 })
@@ -40,69 +41,40 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   currentTheme = 'default';
 
-  userMenu = [ { title: 'Uživatelský profil', icon: 'person-outline' }, { title: 'Odhlásit se', icon: 'log-out-outline' } ];
+  userMenu = [ { title: 'Profile' }, { title: 'Log out' } ];
 
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
               private themeService: NbThemeService,
-              private layoutService: LayoutService,
-              private breakpointService: NbMediaBreakpointsService,
-              private authService: LocalAuthService,
               private userService: UserService,
-              private router: Router) {
+              private layoutService: LayoutService,
+              public authService: LocalAuthService,
+              private breakpointService: NbMediaBreakpointsService) {
   }
 
   ngOnInit() {
     this.currentTheme = this.themeService.currentTheme;
 
-    this.userService.getUser().then(user => {
+    this.userService.getPromiseUser().then(user => {
       this.user = user;
-      console.log(this.user);
     }).catch(err => {
       console.log(err);
-    })
-    // this.userService.getUsers()
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((users: any) => this.user = users.nick);
+    });
 
-    const { xl } = this.breakpointService.getBreakpointsMap();
-    this.themeService.onMediaQueryChange()
-      .pipe(
-        map(([, currentBreakpoint]) => currentBreakpoint.width < xl),
-        takeUntil(this.destroy$),
-      )
-      .subscribe((isLessThanXl: boolean) => this.userPictureOnly = isLessThanXl);
+    // const { xl } = this.breakpointService.getBreakpointsMap();
+    // this.themeService.onMediaQueryChange()
+    //   .pipe(
+    //     map(([, currentBreakpoint]) => currentBreakpoint.width < xl),
+    //     takeUntil(this.destroy$),
+    //   )
+    //   .subscribe((isLessThanXl: boolean) => this.userPictureOnly = isLessThanXl);
 
-    this.themeService.onThemeChange()
-      .pipe(
-        map(({ name }) => name),
-        takeUntil(this.destroy$),
-      )
-      .subscribe(themeName => this.currentTheme = themeName);
-
-    this.menuService.onItemClick()
-      .subscribe(event => {
-        this.onContecxtItemSelection(event.item.icon);
-      })
-
-
-  }
-
-  onContecxtItemSelection(icon) {
-    switch (icon) {
-      case 'log-out-outline':
-        this.authService.logout().subscribe(data => {
-          if (data["state"]) {
-            console.log('Logged out');
-          }
-        });
-        break;
-      case 'person-outline':
-        // this.router.navigateByUrl('/pages/user');
-        break;
-      default:
-        console.log('Something went wrong!');
-    }
+    // this.themeService.onThemeChange()
+    //   .pipe(
+    //     map(({ name }) => name),
+    //     takeUntil(this.destroy$),
+    //   )
+    //   .subscribe(themeName => this.currentTheme = themeName);
   }
 
   ngOnDestroy() {
@@ -124,5 +96,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   navigateHome() {
     this.menuService.navigateHome();
     return false;
+  }
+
+  logout() {
+    this.authService.logout().subscribe(response => {
+      if(response) {
+        window.location.reload();
+      }
+    });
+
   }
 }

@@ -1,6 +1,6 @@
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import {AuthGuard, IsUserLoggedIn} from './@core/guards/auth.guard';
+import {AuthGuard, IsLoggedIn} from './@core/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -11,9 +11,9 @@ const routes: Routes = [
   },
   {
     path: 'auth',
+    canActivate: [IsLoggedIn],
     loadChildren: () => import('./pages/auth/auth.module')
-      .then(m => m.AuthModule),
-    canActivate: [IsUserLoggedIn],
+      .then(m => m.AuthModule)
   },
 
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },

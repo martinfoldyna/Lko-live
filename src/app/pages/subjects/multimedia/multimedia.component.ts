@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {ArticlesService} from "../../articles/articles.service";
+import {PostService} from "../../articles/post.service";
 import {Video} from "../../../@core/data/video";
 import {PhotosService} from "../../photos/photos.service";
-import {Article} from "../../../@core/data/article";
-import {VideoService} from "../../video/video.service";
+import {Post} from "../../../@core/data/post";
+import {CompressedPhoto} from "../../../@core/data/photo";
+import {Image} from "../../../@core/data/image";
+import {NbToastrService} from "@nebular/theme"
 
 @Component({
   selector: 'ngx-multimedia',
@@ -12,66 +14,60 @@ import {VideoService} from "../../video/video.service";
 })
 export class MultimediaComponent implements OnInit {
 
-  fetchingData = false;
+  deletingImage = false;
+  loadingImages = false;
+  loadingArticles = false;
   subject = "MME";
-  loadNewArticles = false;
-  videoThumbnail = false;
   video: Video = {};
+  allVideos: [Video];
+  allImages: [Image];
 
 
   public article;
 
   constructor(
-    private articlesService: ArticlesService,
+    private articlesService: PostService,
     private photosService: PhotosService,
-    private videoService: VideoService
+    private postService: PostService,
+    private toastr: NbToastrService
   ) {
 
   }
 
   ngOnInit() {
+    this.loadArticles();
+    this.loadImages();
   }
 
-  upload() {
-    let thumbnailName = Date.now().toString(36);
-    console.log(this.video.url);
-    this.video.subject = this.subject;
-    this.video.thumbnailName = thumbnailName;
-    console.log(this.video);
-    this.videoService.uploadVideo(this.video).subscribe(data => {
-      this.uploadImage(this.video.thumbnail, data._id);
-    }, error => {
-      console.log(error);
-    })
-
-  }
-
-  uploadImage(image, docId) {
-    let formData: FormData = new FormData();
-    let headers = new Headers();
-    headers.append('enctype', 'multipart/form-data');
-    formData.append(`file0`, image);
-    formData.append(`docId`, docId);
-    this.photosService.upload(formData, headers).subscribe(data => {
-      console.log(data);
+  loadArticles() {
+    this.loadingArticles = true;
+    this.postService.loadArticles(this.subject).subscribe(response => {
+      if (response.post) {
+        this.loadingArticles = false;
+        this.allVideos = response.post;
+      } else {
+        this.toastr.danger('', 'Něco se pokazilo, zkuste akci opakovat později.')
+      }
     })
   }
 
-  // checkVideoLink() {
-  //   let link = this.article.link;
-  //   let image: string;
-  //   if (link.includes('youtube.com')) {
-  //     if (link.includes('v=')) {
-  //       let splittedLink = link.split('v=')
-  //       this.imageThumbnail = "http://img.youtube.com/vi/" + splittedLink[1] + "/hqdefault.jpg";
-  //       console.log(image);
-  //     }
-  //   }
-  //
-  // }
-
-  filesSelected(event) {
-    this.video.thumbnail = event.target.files[0];
-    console.log(this.video.thumbnail);
+  loadImages() {
+    this.loadingImages = true;
+    this.photosService.loadImages(this.subject).subscribe(data => {
+      if(data.photos) {
+        this.allImages = data.photos;
+        if (this.deletingImage === true) this.deletingImage = false;
+        this.loadingImages = false;
+      } else {
+        this.toastr.danger('', 'Něco se pokazilo, zkuste akci opakovat později.')
+      }
+    }, err => {
+      console.log(err);
+    })
   }
+
+  parentFunc() {
+    this.loadArticles();
+  }
+
 }

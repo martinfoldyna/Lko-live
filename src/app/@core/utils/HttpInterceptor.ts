@@ -2,20 +2,17 @@ import {HttpInterceptor, HttpRequest, HttpHandler, HttpEvent} from '@angular/com
 import {Observable} from 'rxjs';
 import {HttpHeaders} from "@angular/common/http";
 import {LocalAuthService} from "../../pages/auth/auth.service";
+import { Injectable } from '@angular/core';
 
-export class HttpHeaderInterceptor implements HttpInterceptor {
+
+@Injectable()
+export class TokenInterceptor implements HttpInterceptor {
+
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const authReq = req.clone({
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Authorization': 'JWT ' + LocalAuthService.getToken()
-
-      })
+    const userToken = LocalAuthService.prototype.getToken();
+    const modifiedReq = req.clone({
+      headers: req.headers.set('Authorization', `JWT ${userToken}`),
     });
-
-    console.log('Intercepted HTTP call', authReq);
-
-    return next.handle(authReq);
+    return next.handle(modifiedReq);
   }
 }

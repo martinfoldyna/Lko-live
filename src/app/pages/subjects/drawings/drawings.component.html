@@ -1,15 +1,23 @@
-<div class="row">
-  <div class="col-md-12">
-    <nb-card>
-      <nb-card-header>
-        Nahrajte nové výkresy
-      </nb-card-header>
-      <nb-card-body>
-        <ngx-add-photo [subject]="subject"></ngx-add-photo>
-      </nb-card-body>
+<nb-card>
+  <nb-card-header>
+    Nahrajte nové výkresy
+  </nb-card-header>
+  <nb-card-body>
+    <ngx-add-photo [subject]="subject"></ngx-add-photo>
+  </nb-card-body>
 
+</nb-card>
+<div class="row" *ngIf="galleryImages">
+  <div *ngFor="let group of groupedImages | keyvalue" class="col-md-6">
+    <ngx-image-card [groupKey]="group.key" [groupedImage]="group.value"></ngx-image-card>
+  </div>
+</div>
+<div class="row">
+  <div class="w-75 m-auto m-2 d-block h-25">
+    <nb-card nbSpinner="true" class="h-100" *ngIf="!galleryImages" nbSpinnerStatus="primary">
+      <nb-card-body>
+        Načítám obrázky..
+      </nb-card-body>
     </nb-card>
   </div>
 </div>
-
-<ngx-image-card [subject]="subject"></ngx-image-card>

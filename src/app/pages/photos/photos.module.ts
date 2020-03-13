@@ -12,7 +12,10 @@ import {
   NbInputModule,
   NbLayoutModule, NbSpinnerModule,
   NbIconModule,
-  NbUserModule
+  NbUserModule,
+  NbPopoverModule,
+  NbSelectModule
+
 } from "@nebular/theme";
 import { OverviewComponent } from './overview/overview.component';
 import {FormsModule} from "@angular/forms";
@@ -20,11 +23,18 @@ import {NgxImageCompressService} from "ngx-image-compress";
 import {ArticlesModule} from "../articles/articles.module";
 import { ImageCardComponent } from './image-card/image-card.component';
 import { LightboxComponent } from './lightbox/lightbox.component';
+import {MomentModule} from "ngx-moment";
+import { LazyloadDirective } from './image-card/lazyload.directive';
+import {PhotosService} from "./photos.service";
+import {NgxGalleryModule} from "ngx-gallery"
+import { NgImageSliderModule } from 'ng-image-slider';
+
 
 @NgModule({
-  declarations: [PhotosComponent, AddPhotoComponent, OverviewComponent, ImageCardComponent, LightboxComponent],
+  declarations: [PhotosComponent, AddPhotoComponent, OverviewComponent, ImageCardComponent, LightboxComponent, LazyloadDirective],
   imports: [
     CommonModule,
+    NgImageSliderModule,
     PhotosRoutingModule,
     NbCardModule,
     FormsModule,
@@ -38,12 +48,16 @@ import { LightboxComponent } from './lightbox/lightbox.component';
     NbSpinnerModule,
     NbUserModule,
     ArticlesModule,
+    MomentModule,
+    NbPopoverModule,
+    NgxGalleryModule,
+    NbSelectModule
   ],
   exports: [
     ImageCardComponent,
     AddPhotoComponent
   ],
-  providers: [NgxImageCompressService],
+  providers: [NgxImageCompressService, PhotosService],
   entryComponents: [
     LightboxComponent
   ]

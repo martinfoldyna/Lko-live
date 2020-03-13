@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { NbDialogRef } from '@nebular/theme';
+import { NbDialogRef, NbToastrService } from '@nebular/theme';
 import {Input} from '@angular/core';
-import {ArticlesService} from '../articles.service';
+import {PostService} from '../post.service';
+import {PhotosService} from "../../photos/photos.service";
 
 @Component({
   templateUrl: 'window-edit.component.html',
@@ -13,8 +14,9 @@ export class WindowEditComponent implements OnInit{
   newArticle;
   articleWasUpdated = false;
   constructor(
-    private dialogRef: NbDialogRef<WindowEditComponent>,
-    private articlesService: ArticlesService,
+    public dialogRef: NbDialogRef<WindowEditComponent>,
+    private articlesService: PostService,
+    private toastr: NbToastrService
   ) {
 
   }
@@ -25,8 +27,11 @@ export class WindowEditComponent implements OnInit{
     this.newArticle = {
       _id: this.article._id,
       title: this.article.title,
-      body: this.article.body,
     };
+
+    if(this.article.url) {
+      this.newArticle.url = this.article.url;
+    }
   }
 
   close() {
@@ -40,15 +45,14 @@ export class WindowEditComponent implements OnInit{
 
   }
 
-  edit(textArea) {
+  edit() {
     this.fetchingData = true;
     console.log('waay');
-    this.newArticle.body = textArea.value;
     this.articlesService.updateArticle(this.newArticle).subscribe(data => {
       console.log(data);
       if (data) {
         this.fetchingData = false;
-        console.log('here');
+        this.toastr.success('', `Příspěvek \"${this.newArticle.title}\" upraven!`)
         this.dialogRef.close(true);
       }
     }, err => {

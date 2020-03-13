@@ -1,4 +1,12 @@
 export interface NewPhotoSet {
-  description: String;
+  description: string;
   files: any;
+}
+
+export interface CompressedPhoto {
+  size?: number;
+  src?: string;
+  blob?: Blob;
+  fileName?: string;
+  orientation?: number;
 }

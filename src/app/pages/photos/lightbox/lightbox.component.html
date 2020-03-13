@@ -1,8 +1,14 @@
 <nb-card>
   <nb-card-header>
-    {{image.filename}}</nb-card-header>
-  <nb-card-body>
-    <img src="data:image/jpg;base64,{{image.base64}}" alt="">
+    {{image.filename}}
+    <nb-icon pack="eva" icon="close-outline" status="danger" (click)="close()" id="close-icon"></nb-icon>
+  </nb-card-header>
+  <nb-card-body [ngStyle]="{background: 'data:image/jpg;base64,' + image.base64}">
+    <div class="image-container">
+      <img src="data:image/jpg;base64,{{image.base64}}" alt="" *ngIf="!fromSlider">
+      <img src="{{image.image}}" alt="" *ngIf="fromSlider">
+      <br class="clear">
+    </div>
   </nb-card-body>
   <nb-card-footer *ngIf="image.createdBy">
     <nb-user [name]="image.createdBy.name" [picture]="image.createdBy.picture"></nb-user>

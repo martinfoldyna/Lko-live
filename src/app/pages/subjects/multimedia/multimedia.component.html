@@ -5,61 +5,13 @@
         <div class="row">
           <div class="col-md-12">
             Přidat příspěvek
-            <ngx-add-photo [subject]="subject"></ngx-add-photo>
+            <ngx-add-photo (loadImages)="loadImages()" [subject]="subject"></ngx-add-photo>
           </div>
         </div>
       </nb-tab>
       <nb-tab tabTitle="Videa">
-        <div class="row">
-          <div class="col-md-12">
-                Přidat příspěvek
-                <form #form="ngForm">
-                  <div class="form-group">
-                    <label class="label" for="input-title">Nadpis:</label>
-                    <input nbInput
-                           fullWidth
-                           name="title"
-                           id="input-title"
-                           placeholder="Nadpis příspěvku"
-                           required
-                           [(ngModel)] = "video.title"
-                           autocomplete="off">
-                  </div>
 
-                  <div class="form-group">
-                    <label for="input-link" class="label">Odkaz na video</label>
-                    <input nbInput
-                           fullWidth
-                           type="url"
-                           id="input-link"
-                           name="input-link"
-                           [(ngModel)] = "video.url"
-                           autocomplete="off"
-                           required
-                           placeholder="URL adresa">
-                  </div>
-<!--                  <div class="form-group">-->
-<!--                    <nb-checkbox (checkedChange)="videoThumbnail = !videoThumbnail">Náhledový obrázek</nb-checkbox>-->
-<!--                  </div>-->
-                  <div class="form-group" >
-                    <label for="input-thumbnail" class="label">Náhledový obrázek videa</label><br>
-                    <input type="file"
-                           nbInput
-                           id="input-thumbnail"
-                           name="files"
-                           accept="image/*"
-                           (change)="filesSelected($event)">
-                  </div>
-<!--                  <div class="form-group">-->
-<!--                    <label for="input-text" class="label" >Popis:</label>-->
-<!--                    <textarea rows="5" nbInput fullWidth placeholder="Obsah příspěvku" id="input-text" #textarea></textarea>-->
-<!--                  </div>-->
-                  <button class="uploadButton" nbButton fullWidth status="success" [disabled]="!form.valid" (click)="upload()" [nbSpinner]="fetchingData">
-                    Nahrát
-                  </button>
-                </form>
-          </div>
-        </div>
+        <ngx-add-url-thumbnail-post (loadVideos)="loadArticles()" [subject]="subject"></ngx-add-url-thumbnail-post>
 
       </nb-tab>
     </nb-tabset>
@@ -67,7 +19,31 @@
 </nb-card>
 <!--<div class="infinite-cards row">-->
 <h2>Fotky</h2>
-<ngx-image-card [subject]="subject"></ngx-image-card>
+
+  <div class="row">
+    <div class="w-75 m-auto m-2 d-block h-25">
+      <nb-card nbSpinner="true" class="h-100" *ngIf="loadingImages" nbSpinnerStatus="primary">
+        <nb-card-body>
+          Načítám obrázky..
+        </nb-card-body>
+      </nb-card>
+    </div>
+    <div class="own-scroll col-md-12 col-lg-4 col-xxxl-4 ng-star-inserted" *ngFor="let photo of allImages">
+      <ngx-image-card (loadImages)="loadImages()" [image]="photo" [subject]="subject" (loadNewImages)="receivedImage($event)"></ngx-image-card>
+    </div>
+  </div>
+<!--  <ngx-image-card [subject]="subject"></ngx-image-card>-->
 <h2>Videa</h2>
-<ngx-video-card [subject]="subject"></ngx-video-card>
+<div class="row">
+  <div class="w-75 m-auto m-2 d-block h-25">
+    <nb-card nbSpinner="true" class="h-100" *ngIf="!allVideos" nbSpinnerStatus="primary">
+      <nb-card-body>
+        Načítám videa..
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="own-scroll col-md-12 col-lg-4 col-xxxl-4 ng-star-inserted" *ngFor="let video of allVideos">
+    <ngx-url-card (loadVideos)="loadArticles()" [post]="video" ></ngx-url-card>
+  </div>
+</div>
 <!--</div>-->

@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
-import {ArticlesService} from "./articles.service";
+import {PostService} from "./post.service";
 import {NbWindowService, NbDialogService, NbToastrService} from "@nebular/theme";
 import {WindowEditComponent} from "./window-edit/window-edit.component";
 
@@ -25,7 +25,7 @@ export class ArticlesComponent implements OnInit {
 
   constructor(
     private toaster: NbToastrService,
-    private articlesService: ArticlesService,
+    private articlesService: PostService,
     private windowService: NbWindowService,
     private dialogService: NbDialogService
   ) {
@@ -66,18 +66,18 @@ export class ArticlesComponent implements OnInit {
   upload(textArea) {
     this.fetchingData = true;
     this.article.body = textArea.value;
-    console.log(this.article.body);
-    this.articlesService.addArticle(this.article).subscribe(data => {
-      console.log(data);
-      if(data) {
-        this.fetchingData = false;
-        this.loadArticles();
-        console.log('here');
-      }
-    }, err => {
-      console.log(err);
-      this.fetchingData = false;
-    })
+    // console.log(this.article.body);
+    // this.articlesService.addArticle(this.article).subscribe(data => {
+    //   console.log(data);
+    //   if(data) {
+    //     this.fetchingData = false;
+    //     this.loadArticles();
+    //     console.log('here');
+    //   }
+    // }, err => {
+    //   console.log(err);
+    //   this.fetchingData = false;
+    // })
   }
 
   deleteArticle(articleId, articleTitle) {

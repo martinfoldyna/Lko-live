@@ -1,46 +1,54 @@
+        <form #form>
 
-
-        <form #form="ngForm" (ngSubmit)="upload($event)">
-          <div class="form-group">
-            <label class="label" for="input-title">Popis:</label>
+          <div class="form-group" *ngIf="subject==='STR'">
+            <label class="label" for="input-title">Název výkresu:</label>
             <input nbInput
                    fullWidth
                    ngModel
-                   [(ngModel)]="photo.title"
                    name="title"
                    id="input-title"
-                   placeholder="Popisu obrázku"
-                   autofocus>
+                   placeholder="Název výkresu"
+                   [(ngModel)] = "photoDescription"
+                   autofocus
+                   required
+                   autocomplete="off">
           </div>
           <div class="form-group">
-            <label class="label" for="input-files">Vyberte obrázky, které chcete nahrát:</label>
+            <label class="label" for="input-files" *ngIf="subject!=='STR'">Vyberte obrázky, které chcete nahrát:</label>
+            <label class="label" for="input-files" *ngIf="subject==='STR'">Vyberte obrázky, které chcete nahrát (max 3x):</label>
             <input type="file"
                    nbInput
-                   multiple
                    id="input-files"
                    name="files"
                    accept="image/*"
-                   (change)="filesSelected($event)">
+                   [disabled]="disableFileInput()"
+                   (change)="filesSelected($event); compressingImages = true">
           </div>
-<!--          <div class="form-group">-->
-<!--            <label for="input-description">-->
-<!--              <textarea-->
-<!--                fullWidth-->
-<!--                id="input-description"-->
-<!--                [(ngModel)]="photo.description"-->
-<!--              ></textarea>-->
-<!--            </label>-->
-<!--          </div>-->
+          <div class="form-group">
+            <nb-select placeholder="Vyberte ročník" [(selected)]="classYear">
+              <nb-option value="0">1. ročník</nb-option>
+              <nb-option value="1">2. ročník</nb-option>
+              <nb-option value="2">3. ročník</nb-option>
+              <nb-option value="3">4. ročník</nb-option>
+            </nb-select>
+          </div>
 
-          <button class="uploadButton" nbButton fullWidth status="success" [disabled]="!form.valid">
+          <button class="uploadButton" nbButton fullWidth status="success" [disabled]="disableSubmit()" (click)="upload(form)" [nbSpinner]="compressingImages">
             Nahrát
           </button>
 
+          <div class="row" style="padding-top: 20px; padding-bottom: 20px;">
+
+            <div class="col-md-4" *ngFor="let image of thumbnailFiles; let i = index" style="height: 300px;  padding: 0;">
+              <div class="content-wrapper" style="height: 100%; padding: 10px;">
+                <img [src]="image.src" alt="thumbnail image" [style.transform]="photosService.rotateImage(image.orientation)" style="object-fit: cover; display: block; margin: 0 auto; height: 80%; border-radius: 0.25rem; max-width: 100%" >
+
+                <button nbButton style="width: 80%; display: block; margin: 10px auto;" status="danger" (click)="removeImage(i)">odebrat</button>
+              </div>
+            </div>
+
+          </div>
+
         </form>
 
-
-        <br><br> Original: Size: {{sizeOfOriginalImage | number : '1.2-2'}}MB
-        <br><img [src]="localUrl" height="200px">
-        <br><br><br> Compressed: Size: {{sizeOFCompressedImage | number : '1.2-2'}}MB<br>
-        <img [src]="localCompressedURl" height="150px">
 

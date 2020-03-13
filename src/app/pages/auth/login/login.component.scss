@@ -8,3 +8,8 @@
   width: 100%;
   justify-content: space-between;
 }
+
+::ng-deep .back-link,
+::ng-deep nb-card-header {
+  display: none !important;
+}

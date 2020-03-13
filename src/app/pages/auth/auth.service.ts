@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {AuthService, AuthServiceConfig, GoogleLoginProvider} from "angularx-social-login";
+import {AuthoriseUser} from "../../@core/data/users";
+import {Observable} from "rxjs";
+import {AuthorisedUserResponse, GoogleUserResponse, MicrosoftUserResponse} from "../../@core/data/auth";
 
 
 @Injectable({
@@ -11,26 +14,25 @@ export class LocalAuthService {
 
   constructor(
     private http: HttpClient,
-  private socialAuth: AuthService,
-
+    private socialAuth: AuthService,
   ) { }
-
-
 
   load() {
     return this.http.get(`${environment.apiUrl}auth/`);
   }
 
-  static getToken() {
-    return localStorage.getItem('auth_token');
+  getToken() {
+    return sessionStorage.getItem('auth_token');
   }
 
-  login(body) {
-    return this.http.post(`${environment.apiUrl}auth/login`, body);
-  }
-
-  register(credentials) {
-    return this.http.post(`${environment.apiUrl}auth/register`, credentials);
+  promiseToken(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      let token = sessionStorage.getItem('auth_token');
+      if(token) resolve(token);
+      else {
+        reject('Token not found');
+      }
+    })
   }
 
   logout() {
@@ -76,21 +78,30 @@ export class LocalAuthService {
   }
 
   googleLogin() {
-    return new Promise((resolve, reject) => {
+    return new Promise<GoogleUserResponse>((resolve, reject) => {
       this.socialAuth.signIn(GoogleLoginProvider.PROVIDER_ID).then(googleUser => {
-          this.http.post(`${environment.apiUrl}auth/google/login`, googleUser).subscribe(requestUser => {
-            console.log(googleUser, requestUser);
-            resolve(googleUser)
-            if(!googleUser){
-              reject(new Error('Fucks'))
+          this.http.post<GoogleUserResponse>(`${environment.apiUrl}auth/google/login`, googleUser).subscribe(response => {
+            resolve(response)
+            if(!response){
+              reject(new Error('Google user not received!'))
             }
+          }, err => {
+            reject(err);
           });
       });
     })
   }
 
-  googleLogout() {
+  microsoftLogin(token: string): Observable<AuthorisedUserResponse> {
+    return this.http.post<AuthorisedUserResponse>(`${environment.apiUrl}auth/microsoft/login`, {token: token})
+  }
 
+  authorise(id: string): Observable<AuthorisedUserResponse> {
+    return this.http.post<AuthorisedUserResponse>(`${environment.apiUrl}auth/authorise/${id}`, {});
+  }
+
+  deAuthorise(id: string): Observable<AuthorisedUserResponse> {
+    return this.http.post<AuthorisedUserResponse>(`${environment.apiUrl}auth/deauthorise/${id}`, {});
   }
 
 }

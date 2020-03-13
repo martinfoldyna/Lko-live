@@ -5,6 +5,7 @@ export interface User {
   username: string;
   email: string;
   picture: string;
+  role: string;
 }
 
 export interface AuthenticationUser {
@@ -15,11 +16,23 @@ export interface AuthenticationUser {
   rePassword: string;
 }
 
+export interface AuthoriseUser {
+  name: string;
+  state: string;
+  email: string;
+  role: string;
+}[];
+
 export interface GoogleUser {
   name: string;
   email: string;
   picture: string;
   token: string;
+}
+
+export interface MicrosoftUser {
+  name: string;
+  preferedUsername: string;
 }
 
 export interface Contacts {

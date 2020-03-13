@@ -31,18 +31,4 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
   }
 
-  register(form) {
-    console.log('Validity:', form.valid);
-    console.log('Passwords:', this.user.password, '&&', this.user.rePassword);
-    if ((form.valid) && (this.user.password === this.user.rePassword)) {
-      this.authService.register(this.user).subscribe(data => {
-        alert('got data');
-      }, (err) => {
-        console.log(err);
-      });
-    } else {
-      console.log("form not valid");
-    }
-  }
-
 }

@@ -1,0 +1,22 @@
+    <nb-card *ngIf="post">
+      <nb-card-header (mouseenter)="showOverlay = !showOverlay" (mouseleave)="showOverlay = !showOverlay">
+
+        <a [href]=post.url target="_blank"><img src="data:image/jpg;base64,{{post.thumbnail}}" alt="" [style.transform]="photosService.rotateImage(post.thumbnail.orientation)">
+        <div class="overlay" *ngIf="showOverlay">
+          <nb-icon [icon]="icon" pack="eva" class="open"></nb-icon>
+        </div></a>
+      </nb-card-header>
+
+      <nb-card-footer>
+        <div class="d-flex justify-content-between">
+          <h2>{{post.title}}</h2>
+          <div class="icons d-flex align-items-center">
+            <nb-icon icon="edit-outline" pack="eva" status="warning" class="update-icon " (click)="editArticle(post)"></nb-icon>
+            <nb-icon icon="trash-2-outline" pack="eva" status="danger" class="remove-icon " (click)="deleteArticle(post._id)" style="cursor: pointer"></nb-icon>
+          </div>
+        </div>
+        <p class="label" *ngIf="post.createdBy">Vytvořeno: {{post.createdBy.name}} - {{post.createdAt | amLocal | amDateFormat: "DD.MM.YYYY"}} </p>
+      </nb-card-footer>
+    </nb-card>
+
+

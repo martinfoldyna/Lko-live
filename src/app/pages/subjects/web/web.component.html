@@ -1,1 +1,14 @@
-<p>web works!</p>
+<nb-card>
+  <nb-card-header>
+    Přidat příspěvek
+  </nb-card-header>
+  <nb-card-body>
+      <ngx-add-url-thumbnail-post [subject]="subject" (loadVideos)="loadArticles()"></ngx-add-url-thumbnail-post>
+  </nb-card-body>
+</nb-card>
+
+<div class="infinite-cards row">
+  <div class="col-md-12 col-lg-4 col-xxxl-4" *ngFor="let post of allPosts">
+    <ngx-url-card [post]="post" [subject]="subject" (loadVideos)="loadArticles()"></ngx-url-card>
+  </div>
+</div>

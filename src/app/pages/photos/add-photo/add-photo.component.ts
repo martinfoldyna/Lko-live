@@ -1,9 +1,9 @@
-import { Component, OnInit, Input} from '@angular/core';
-import { NewPhotoSet } from "../../../@core/data/photo";
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter} from '@angular/core';
+import {CompressedPhoto, NewPhotoSet} from "../../../@core/data/photo";
 import {NgxImageCompressService} from "ngx-image-compress";
 import {PhotosService} from "../photos.service";
 import {Image} from "../../../@core/data/image";
-import {NbToastrService} from "@nebular/theme"
+import {NbToastrService, NbPopoverDirective} from "@nebular/theme"
 
 @Component({
   selector: 'ngx-add-photo',
@@ -11,95 +11,131 @@ import {NbToastrService} from "@nebular/theme"
   styleUrls: ['./add-photo.component.scss']
 })
 export class AddPhotoComponent implements OnInit {
+  @Output("loadImages") loadImages: EventEmitter<any> = new EventEmitter();
+
 
   @Input() subject: string;
 
-  photo: NewPhotoSet;
-  //TODO: add Models!!
-  filesArray = [];
+  @ViewChild(NbPopoverDirective, { static: false }) popover: NbPopoverDirective;
 
-  compressFile;
+  photoDescription: string;
+  thumbnailFiles: Array<CompressedPhoto>;
+  bigImages: Array<CompressedPhoto>;
+  classYear;
 
+  file;
 
-  imgSrcBeforeCompress: string = "./../../../../assets/images/camera1.jpg";
-  imgSrcAfterCompress: string ;
+  localUrl: any;
+  localCompressedUrl: any;
+  sizeOfOriginalImage: number;
+  sizeOfCompressedImage: number;
+  compressingImages: boolean = false;
+  popoverShown: boolean = false;
 
   constructor(
     private imageCompress: NgxImageCompressService,
     private photosService: PhotosService,
     private toastr: NbToastrService
   ) {
-    this.photo = {
-      description: "",
-      files: []
-
-    }
+    this.photoDescription = ""
+    this.thumbnailFiles = new Array<CompressedPhoto>();
+    this.bigImages = new Array<CompressedPhoto>();
 
 
   }
 
   ngOnInit() {
+
   }
 
-  compressFile() {
-    this.imageCompress.uploadFile().then(({image, orientation}) => {
-      this.imgSrcBeforeCompress = image;
-      console.log('orientation: ', orientation);
-      console.warn('Size in bytes was:', this.imageCompress.byteCount(image))
-      this.imageCompress.compressFile(image, orientation, 50, 50).then(result => {
-        this.imgSrcAfterCompress = result;
-        console.warn('Size in bytes was:', this.imageCompress.byteCount(result))
-      })
-    })
+  filesSelected(event) {
+      this.file = event.target.files;
+    this.compressingImages = true;
+
+      for (var i = 0; i < this.file.length; i++) {
+
+        this.setupFileReader(this.file[i]);
+        console.log('file', this.file[i]);
+      }
   }
 
-  upload(event) {
-    console.log('event', event);
+  setupFileReader(file) {
+    if(file) {
+      let fileName = file.name;
+      let reader = new FileReader();
+      reader.onload = (event: any) => {
+        this.localUrl = event.target.result;
+        this.photosService.getOrientation(file).then((orientation) => {
+          console.log(orientation);
+          // compressing the big image
+          this.photosService.compressFile(this.localUrl, fileName, orientation, 80).then(compressedFile => {
+            console.log(compressedFile)
+            if(compressedFile) {
+              this.bigImages.push(compressedFile);
+              this.compressingImages = false;
+            }
+          }).catch(err => {
+            console.log(err);
+            this.toastr.danger(err.message, err.status);
+          })
+
+          //compressing the thumbnail image
+          this.photosService.compressFile(this.localUrl, fileName, orientation, 40).then(compressedFile => {
+            if(compressedFile) {
+              this.thumbnailFiles.push(compressedFile);
+              this.compressingImages = false;
+            }
+          }).catch(err => {
+            console.log(err);
+            this.toastr.danger(err.message, err.status);
+          })
+        })
+      }
+      reader.readAsDataURL(file);
+    }
+  }
+
+  upload(form) {
     let formData: FormData = new FormData();
-    console.log(this.photo.files);
+
+
     let headers = new Headers();
     headers.append('enctype', 'multipart/form-data');
-    // formData.append('title', this.photo.description);
-    console.log();
-    let photoFiles = this.photo.files;
-    for (let i = 0; i < photoFiles.length; i++) {
-      formData.append(`file${i}`, photoFiles[i]);
-    }
+
     formData.append('subject', this.subject);
+    formData.append('classYear', this.classYear);
+    if(this.subject === "STR") {
+      formData.append('group', this.photoDescription);
+    }
+    for (let i = 0; i < this.thumbnailFiles.length; i++) {
+      formData.append(`thumbnail${i}`, this.thumbnailFiles[i].blob, `th_${this.thumbnailFiles[i].fileName};orientation=${this.thumbnailFiles[i].orientation}`);
+    }
+    for (let i = 0; i < this.bigImages.length; i++) {
+      formData.append(`file${i}`, this.bigImages[i].blob, `${this.bigImages[i].fileName};orientation=${this.bigImages[i].orientation}`);
+    }
 
     this.photosService.upload(formData, headers).subscribe(data => {
       console.log(data);
+      this.loadImages.emit();
+      this.thumbnailFiles = new Array<CompressedPhoto>();
+      this.classYear = undefined;
+      form.reset();
     }, err => {
       console.log(err);
     })
   }
 
-  filesSelected(event) {
-      this.compressFile = event.target.files[0];
-      const files = event.target.files;
-      const filesLength = files.length;
+  removeImage(position) {
+    this.thumbnailFiles.splice(position,1);
+  }
 
-      const maximalSize = 570; //Image's maximum size - if higher image will be compressed
+  disableFileInput() {
+    return this.subject === "STR" && this.thumbnailFiles.length > 2;
+  }
 
-      let i = 0;
-      while (i < filesLength) {
-        const selectedFile = files[i];
-        const selectedFileSizeInKbs = selectedFile.size / 1000;
-        console.log('size: ', Math.round(selectedFileSizeInKbs));
-        if (Math.round(selectedFileSizeInKbs) > 570) {
-          let quality = Math.round(100 - Math.round(selectedFile.size / 10) / maximalSize);
-          console.log(quality);
-          this.imageCompress.compressFile(selectedFile, -1, 50, 100).then(result => {
-            this.filesArray.push(result);
-            console.log(this.imageCompress.byteCount(result))
-          })
-          console.log("File is too big");
-        }
-          this.filesArray.push(selectedFile);
-        this.photo.files = this.filesArray;
+  disableSubmit() {
+    return !!((this.subject === "STR" && !this.photoDescription) || this.thumbnailFiles.length === 0);
 
-        i++;
-      }
 
   }
 

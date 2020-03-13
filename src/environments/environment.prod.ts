@@ -5,4 +5,11 @@
  */
 export const environment = {
   production: true,
+  apiUrl: 'http://localhost:3000/api/',
+  models: {
+    video: 'video',
+    file: 'file',
+    photo: 'photo',
+    article: 'article',
+  }
 };

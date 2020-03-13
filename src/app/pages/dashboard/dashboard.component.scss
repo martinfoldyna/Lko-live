@@ -1,0 +1,16 @@
+nb-icon {
+  font-size: 1.5rem;
+}
+
+a {
+  text-decoration: none;
+}
+
+nb-card {
+  transition: all .5s;
+}
+
+nb-card:hover {
+  box-shadow: 0 14px 25px rgba(0,0,0,.16);
+  transform: scale(1.01, 1.01);
+}

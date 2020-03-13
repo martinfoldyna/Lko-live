@@ -1,65 +1,14 @@
 <div class="spinner_section" [nbSpinner]="fetchingData">
   <h1 id="title" class="title">Login</h1>
-  <p class="sub-title">Přihlašte se se svým emailem nebo pomocí školního @pslib.cz účtu.</p>
-
-  <!--<nb-alert *ngIf="showMessages.error && errors?.length && !submitted" outline="danger" role="alert">-->
-  <!--  <p class="alert-title"><b>Oh snap!</b></p>-->
-  <!--  <ul class="alert-message-list">-->
-  <!--    <li *ngFor="let error of errors" class="alert-message">{{ error }}</li>-->
-  <!--  </ul>-->
-  <!--</nb-alert>-->
-
-  <!--<nb-alert *ngIf="showMessages.success && messages?.length && !submitted" outline="success" role="alert">-->
-  <!--  <p class="alert-title"><b>Hooray!</b></p>-->
-  <!--  <ul class="alert-message-list">-->
-  <!--    <li *ngFor="let message of messages" class="alert-message">{{ message }}</li>-->
-  <!--  </ul>-->
-  <!--</nb-alert>-->
-
-  <form (ngSubmit)="login()" #form="ngForm" aria-labelledby="title">
-
-    <div class="form-control-group">
-      <label class="label" for="input-email">Uživatelské jméno:</label>
-      <input nbInput
-             fullWidth
-             ngModel
-             [(ngModel)]="user.username"
-             name="username"
-             id="input-email"
-             placeholder="Email address"
-             autofocus>
-    </div>
-
-    <div class="form-control-group">
-      <label class="label" for="input-password">Heslo:</label>
-      <input nbInput
-             fullWidth
-             name="password"
-             [(ngModel)]="user.password"
-             type="password"
-             id="input-password"
-             placeholder="Password">
-    </div>
-
-    <button nbButton
-            status="success"
-            fullWidth
-            class="login-button"
-            [disabled]="submitted || !form.valid"
-            [class.btn-pulse]="submitted"> Log In </button>
+  <p class="sub-title">Přihlašte se pomocí školního @pslib.cz, @365.pslib.cz nebo @pslib.cloud účtu.</p>
 
     <div class="buttons">
       <button nbButton
               class="login-button"
-              (click) = googleLogin()> <nb-icon icon="google-outline" pack="eva"></nb-icon> </button>
+              (click) = googleLogin()>Google Login</button>
 
       <button nbButton
               class="login-button"
               (click)="microsoftLogin()">Microsoft Login</button>
     </div>
-  </form>
-
-  <section class="another-action" aria-label="Register">
-    Nemáte účet? <a class="text-link" routerLink="../register">Zaregistrujte se</a>
-  </section>
 </div>

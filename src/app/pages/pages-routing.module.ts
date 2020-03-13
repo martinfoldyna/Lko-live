@@ -4,7 +4,9 @@ import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
-import {UserComponent} from "./user/user.component";
+import {UserComponent} from './user/user.component';
+import {AdminGuard} from '../@core/guards/auth.guard';
+import {IsAdminGuard} from "../@core/guards/is-admin.guard";
 
 const routes: Routes = [{
   path: '',
@@ -30,8 +32,10 @@ const routes: Routes = [{
         .then(m => m.SubjectsModule),
     },
     {
-      path: 'user',
-      component: UserComponent,
+      path: 'users',
+      canActivate: [AdminGuard],
+      loadChildren: () => import('./user/user.module')
+        .then(m => m.UserModule),
     },
     {
       path: '',

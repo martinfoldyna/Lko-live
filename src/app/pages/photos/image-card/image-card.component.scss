@@ -1,5 +1,12 @@
 img {
   max-width: 100%;
+  transform: scale(1.1, 1.1);
+  cursor: pointer;
+  transition: all .5s;
+}
+
+img:hover {
+  transform: scale(1, 1);
 }
 
 .image-header {
@@ -10,4 +17,39 @@ img {
 
 nb-card-body {
   padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+}
+
+.overlay nb-icon {
+  color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+}
+
+.image-card {
+  transition: box-shadow, transform .5s;
+}
+
+.image-card:hover {
+  box-shadow: 0 14px 25px rgba(0,0,0,.16);
+  transform: scale(1.01, 1.01);
+}
+
+::ng-deep .image-slider img {
+  object-fit: cover !important;
+  cursor: pointer;
 }

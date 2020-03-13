@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {Subject} from "../../../@core/data/subject";
-import {ArticlesService} from "../articles.service";
+import {PostService} from "../post.service";
 import {WindowEditComponent} from "../window-edit/window-edit.component";
 import {NbDialogService, NbToastrService} from "@nebular/theme";
 import {GeneralService} from "../../../@core/utils/general.service";
@@ -21,7 +21,7 @@ export class ArticleCardComponent implements OnInit {
   deletingArticle = false;
 
   constructor(
-    private articlesService: ArticlesService,
+    private articlesService: PostService,
     private dialogService: NbDialogService,
     private generalService: GeneralService,
     private toastr: NbToastrService,
@@ -39,9 +39,14 @@ export class ArticleCardComponent implements OnInit {
     }
 
     this.articlesService.loadArticles(this.subject).subscribe(data => {
-      if(!data) console.log('Ooops');
-      console.log(data);
-      this.allArticles = data;
+      if(!data.post) console.log('Ooops');
+      this.allArticles = data.post.filter(article => {
+        if(article.subject !== "undefined") {
+          return false;
+        } else {
+          return true;
+        }
+      });
       this.articlesLoaded = Promise.resolve(true);
     })
   }
@@ -54,9 +59,10 @@ export class ArticleCardComponent implements OnInit {
     this.deletingArticle = true;
     this.generalService.delete(environment.models.article, articleId).subscribe(data => {
       this.deletingArticle = false;
-      this.toastr.success('Příspěvek smazán', 'smazáno');
-      console.log(data);
+      this.toastr.success('', data.code.message );
       this.loadArticles();
+    }, err => {
+      this.toastr.danger(err.error, 'Problém!')
     })
   }
 

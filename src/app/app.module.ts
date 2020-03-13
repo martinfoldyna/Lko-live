@@ -1,3 +1,4 @@
+
 /**
  * @license
  * Copyright Akveo. All Rights Reserved.
@@ -24,6 +25,8 @@ import {
 import {MsalModule} from "@azure/msal-angular";
 import {OAuthSettings} from "../oauth";
 import {AuthService, AuthServiceConfig, GoogleLoginProvider} from "angularx-social-login";
+import {TokenInterceptor} from "./@core/utils/HttpInterceptor";
+import {AdminGuard} from "./@core/guards/auth.guard";
 export function socialConfigs() {
   const config = new AuthServiceConfig(
     [
@@ -61,9 +64,15 @@ export function socialConfigs() {
   bootstrap: [AppComponent],
   providers: [
     AuthService,
+    AdminGuard,
     {
       provide: AuthServiceConfig,
       useFactory: socialConfigs
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
     }
   ]
 

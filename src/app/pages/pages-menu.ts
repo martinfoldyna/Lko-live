@@ -1,42 +1,34 @@
 import { NbMenuItem } from '@nebular/theme';
+import {UserService} from "./user/user.service";
 
 export const MENU_ITEMS: NbMenuItem[] = [
   {
-    title: 'Nástěnka',
-    icon: 'home-outline',
-    link: '/pages/dashboard',
-    home: true,
+    title: 'PŘEDMĚTY',
+    group: true
   },
   {
-    title: 'FEATURES',
+    title: 'WEB',
+    icon: 'browser-outline',
+    link: '/pages/subjects/web',
+  },
+  {
+    title: 'MME',
+    icon: 'camera-outline',
+    link: '/pages/subjects/mme'
+  },
+  {
+    title: 'Výkresy',
+    icon: 'edit-2-outline',
+    link: '/pages/subjects/drawings'
+  },
+  {
+    title: 'Uživatelé',
     group: true,
   },
   {
-    title: 'Fotografie',
-    icon: 'camera-outline',
-    link: '/pages/photos',
-  },
-  {
-    title: 'Příspěvky',
-    icon: 'edit-2-outline',
-    link: '/pages/articles',
-  },
-  {
-    title: 'Předměty',
-    icon: 'archive-outline',
-    children: [
-      {
-        title: 'WEB',
-        link: '/pages/subjects/web'
-      },
-      {
-        title: 'MME',
-        link: '/pages/subjects/mme'
-      },
-      {
-        title: 'Výkresy',
-        link: '/pages/subjects/drawings'
-      },
-    ]
+    title: 'Autorizování uživatelů',
+    link: '/pages/users/',
+    icon: 'person-outline',
   }
+
 ];

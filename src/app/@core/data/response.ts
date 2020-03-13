@@ -1,20 +1,17 @@
-import {User} from "./users";
-
-export interface DataResponse {
-  data: any;
-  toaster?: {
-    message: string,
-    title: string,
-    status: string
-  }
-}
+import {AuthoriseUser, User} from "./users";
+import {Code} from "./code";
 
 export interface UserResponse {
-  data: any;
-  toaster?: {
-    message: string,
-    title: string,
-    status: string
-  };
+  code: Code;
   user?: User;
+  users?: [AuthoriseUser];
+}
+
+export interface SimpleResponse {
+  code: Code;
+}
+
+export interface ResultResponse {
+  code: Code;
+  result: any;
 }

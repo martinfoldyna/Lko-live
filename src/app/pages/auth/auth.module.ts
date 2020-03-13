@@ -18,6 +18,7 @@ import {
 import { RegisterComponent } from './register/register.component';
 import {NbEvaIconsModule} from "@nebular/eva-icons";
 
+
 @NgModule({
   declarations: [LoginComponent, RegisterComponent],
   imports: [
@@ -34,6 +35,6 @@ import {NbEvaIconsModule} from "@nebular/eva-icons";
     NbAuthModule,
     NbIconModule,
     NbSpinnerModule
-  ],
+  ]
 })
 export class AuthModule { }
