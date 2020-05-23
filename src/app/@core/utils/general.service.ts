@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from "../../../environments/environment";
 import {Observable} from "rxjs";
 import {ResultResponse} from "../data/response";
+import {Config} from "../../../conf";
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,6 @@ export class GeneralService {
   ) {}
 
   delete(model, id): Observable<ResultResponse> {
-    return this.http.post<ResultResponse>(`${environment.apiUrl}general/delete/${model}/${id}`, []);
+    return this.http.post<ResultResponse>(`${Config.apiUrl}general/delete/${model}/${id}`, []);
   }
 }

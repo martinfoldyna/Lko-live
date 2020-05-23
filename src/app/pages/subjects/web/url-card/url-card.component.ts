@@ -4,6 +4,8 @@ import {PhotosService} from "../../../photos/photos.service";
 import {PostService} from "../../../articles/post.service";
 import {NbToastrService, NbDialogService} from "@nebular/theme";
 import {WindowEditComponent} from "../../../articles/window-edit/window-edit.component";
+import {GeneralService} from "../../../../@core/utils/general.service";
+import {environment} from "../../../../../environments/environment";
 
 @Component({
   selector: 'ngx-url-card',
@@ -23,6 +25,7 @@ export class UrlCardComponent implements OnInit {
     private postService: PostService,
     private toastr: NbToastrService,
     private dialogService: NbDialogService,
+    private generalService: GeneralService
 
   ) {
     this.icon = this.subject === "MME" ? 'play-circle-outline' : 'external-link-outline';
@@ -32,7 +35,7 @@ export class UrlCardComponent implements OnInit {
   }
 
   deleteArticle(id) {
-    this.postService.deleteArticle(id).subscribe(result => {
+    this.generalService.delete(environment.models.article, id).subscribe(result => {
       if(result) {
         console.log(result);
         this.loadVideos.emit();

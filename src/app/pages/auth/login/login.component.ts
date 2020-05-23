@@ -3,10 +3,10 @@ import {LocalAuthService} from '../auth.service';
 import {Router} from "@angular/router";
 import {NbToastrService} from "@nebular/theme";
 import {MsalService} from "@azure/msal-angular";
-import {OAuthSettings} from "../../../../oauth";
 import {AuthService, AuthServiceConfig, GoogleLoginProvider} from "angularx-social-login";
 import {GeneralService} from "../../../@core/utils/general.service";
 import {AuthoriseUser, GoogleUser} from "../../../@core/data/users";
+import {Config} from "../../../../conf";
 
 @Component({
   selector: 'ngx-login',
@@ -57,7 +57,8 @@ export class LoginComponent implements OnInit {
   }
     googleLogin() {
       this.authService.googleLogin().then(user => {
-        this.toaster.success(user.code.message, 'Vítejte')
+        console.log(user);
+        this.toaster.success(user.code.message, 'Vítejte');
         this.storeUser(user.user, 'social', 'google');
         this.router.navigateByUrl('/pages/dashboard');
         this.user = user;
@@ -67,7 +68,7 @@ export class LoginComponent implements OnInit {
     }
 
     async microsoftLogin() {
-      let result = await this.msalService.loginPopup(OAuthSettings.scopes)
+      let result = await this.msalService.loginPopup(Config.microsoft.scopes)
         .catch(reason => {
           this.toaster.danger(JSON.stringify(reason, null, 2), 'Nepodařilo se přihlásit')
         })

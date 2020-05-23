@@ -31,25 +31,6 @@ export class PagesComponent implements OnInit{
       this.menu[5].hidden = true;
     }
 
-    setInterval(() => {
-      if(!this.authService.isTokenValid()) {
-        window.location.reload();
-
-      } else {
-        console.log('token is valid');
-        this.userService.getDatabaseUser(this.userService.getUser().email).subscribe(user => {
-          if(user.user) {
-            const databaseUser = {
-              name: user.user.name,
-              email: user.user.email,
-            }
-            console.log()
-            console.log(this.userService.getUser() == databaseUser)
-          }
-        })
-      }
-    }, 30000)
-
   }
 
 }

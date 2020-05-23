@@ -8,6 +8,7 @@ import {FileReaderEvent} from "../../@core/data/FileReaderEvenet";
 import {NgxImageCompressService} from "ngx-image-compress";
 import {CompressedPhoto} from "../../@core/data/photo";
 import {ResultResponse} from "../../@core/data/response";
+import {Config} from "../../../conf";
 
 
 @Injectable({
@@ -22,7 +23,7 @@ export class PhotosService {
   ) { }
 
   upload(data, headers?) {
-    return this.http.post(`${environment.apiUrl}photo/upload`, data, {
+    return this.http.post(`${Config.apiUrl}photo/upload`, data, {
       reportProgress: true,
       observe: 'events',
       headers: headers
@@ -43,15 +44,15 @@ export class PhotosService {
   }
 
   loadImages(subject): Observable<MultipleImageResponse> {
-    return this.http.get<MultipleImageResponse>(`${environment.apiUrl}photo/retrieve/${subject}/thumbs`);
+    return this.http.get<MultipleImageResponse>(`${Config.apiUrl}photo/retrieve/${subject}/thumbs`);
   }
 
   loadBigImages(subject): Observable<MultipleImageResponse> {
-    return this.http.get<MultipleImageResponse>(`${environment.apiUrl}photo/retrieve/${subject}/all`);
+    return this.http.get<MultipleImageResponse>(`${Config.apiUrl}photo/retrieve/${subject}/all`);
   }
 
   deleteGroup(group): Observable<ResultResponse> {
-    return this.http.post<ResultResponse>(`${environment.apiUrl}photo/deleteGroup/${group}`, []);
+    return this.http.post<ResultResponse>(`${Config.apiUrl}photo/deleteGroup/${group}`, []);
   }
 
   getOrientation(file) {

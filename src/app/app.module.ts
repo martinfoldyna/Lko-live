@@ -23,16 +23,16 @@ import {
   NbLayoutModule,
 } from '@nebular/theme';
 import {MsalModule} from "@azure/msal-angular";
-import {OAuthSettings} from "../oauth";
 import {AuthService, AuthServiceConfig, GoogleLoginProvider} from "angularx-social-login";
 import {TokenInterceptor} from "./@core/utils/HttpInterceptor";
 import {AdminGuard} from "./@core/guards/auth.guard";
+import {Config} from "../conf";
 export function socialConfigs() {
   const config = new AuthServiceConfig(
     [
       {
         id: GoogleLoginProvider.PROVIDER_ID,
-        provider: new GoogleLoginProvider('63183198040-t7kq60occjo8uqpc60bmasg6g0s2r42p.apps.googleusercontent.com')
+        provider: new GoogleLoginProvider(Config.google.providerID)
       }
     ]
   );
@@ -58,7 +58,7 @@ export function socialConfigs() {
     }),
     CoreModule.forRoot(),
     MsalModule.forRoot({
-      clientID: OAuthSettings.appId
+      clientID: Config.microsoft.appId
     })
   ],
   bootstrap: [AppComponent],

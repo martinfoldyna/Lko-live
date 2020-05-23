@@ -5,6 +5,7 @@ import {AuthService, AuthServiceConfig, GoogleLoginProvider} from "angularx-soci
 import {AuthoriseUser} from "../../@core/data/users";
 import {Observable} from "rxjs";
 import {AuthorisedUserResponse, GoogleUserResponse, MicrosoftUserResponse} from "../../@core/data/auth";
+import {Config} from "../../../conf";
 
 
 @Injectable({
@@ -18,7 +19,7 @@ export class LocalAuthService {
   ) { }
 
   load() {
-    return this.http.get(`${environment.apiUrl}auth/`);
+    return this.http.get(`${Config.apiUrl}auth/`);
   }
 
   getToken() {
@@ -46,7 +47,7 @@ export class LocalAuthService {
       this.socialAuth.signOut();
     }
 
-    return this.http.post(`${environment.apiUrl}auth/logout`, {});
+    return this.http.post(`${Config.apiUrl}auth/logout`, {});
   }
 
   googleAuth() {
@@ -80,7 +81,7 @@ export class LocalAuthService {
   googleLogin() {
     return new Promise<GoogleUserResponse>((resolve, reject) => {
       this.socialAuth.signIn(GoogleLoginProvider.PROVIDER_ID).then(googleUser => {
-          this.http.post<GoogleUserResponse>(`${environment.apiUrl}auth/google/login`, googleUser).subscribe(response => {
+          this.http.post<GoogleUserResponse>(`${Config.apiUrl}auth/google/login`, googleUser).subscribe(response => {
             resolve(response)
             if(!response){
               reject(new Error('Google user not received!'))
@@ -93,15 +94,15 @@ export class LocalAuthService {
   }
 
   microsoftLogin(token: string): Observable<AuthorisedUserResponse> {
-    return this.http.post<AuthorisedUserResponse>(`${environment.apiUrl}auth/microsoft/login`, {token: token})
+    return this.http.post<AuthorisedUserResponse>(`${Config.apiUrl}auth/microsoft/login`, {token: token})
   }
 
   authorise(id: string): Observable<AuthorisedUserResponse> {
-    return this.http.post<AuthorisedUserResponse>(`${environment.apiUrl}auth/authorise/${id}`, {});
+    return this.http.post<AuthorisedUserResponse>(`${Config.apiUrl}auth/authorise/${id}`, {});
   }
 
   deAuthorise(id: string): Observable<AuthorisedUserResponse> {
-    return this.http.post<AuthorisedUserResponse>(`${environment.apiUrl}auth/deauthorise/${id}`, {});
+    return this.http.post<AuthorisedUserResponse>(`${Config.apiUrl}auth/deauthorise/${id}`, {});
   }
 
 }

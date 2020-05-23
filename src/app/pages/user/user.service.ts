@@ -5,6 +5,7 @@ import {HttpClient} from '@angular/common/http'
 import {environment} from '../../../environments/environment';
 import {ResultResponse, UserResponse} from '../../@core/data/response';
 import {AuthorisedUserResponse} from "../../@core/data/auth";
+import {Config} from "../../../conf";
 
 
 @Injectable({
@@ -23,7 +24,7 @@ export class UserService {
   }
 
   getDatabaseUser(email: string): Observable<AuthorisedUserResponse> {
-    return this.http.get<AuthorisedUserResponse>(`${environment.apiUrl}user/load/${email}`);
+    return this.http.get<AuthorisedUserResponse>(`${Config.apiUrl}user/load/${email}`);
   }
 
   getPromiseUser(): Promise<User> {
@@ -32,14 +33,14 @@ export class UserService {
   }
 
   getAllUsers(): Observable<AuthorisedUserResponse> {
-    return this.http.get<AuthorisedUserResponse>(`${environment.apiUrl}user/getAll`);
+    return this.http.get<AuthorisedUserResponse>(`${Config.apiUrl}user/getAll`);
   }
 
   update(id: string, user): Observable<AuthorisedUserResponse> {
-    return this.http.post<AuthorisedUserResponse>(`${environment.apiUrl}user/update/${id}`, user);
+    return this.http.post<AuthorisedUserResponse>(`${Config.apiUrl}user/update/${id}`, user);
   }
 
   remove(id: string): Observable<ResultResponse> {
-    return this.http.post<ResultResponse>(`${environment.apiUrl}user/remove/${id}`, {});
+    return this.http.post<ResultResponse>(`${Config.apiUrl}user/remove/${id}`, {});
   }
 }
