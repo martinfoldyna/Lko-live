@@ -62,7 +62,7 @@ export class MultimediaComponent implements OnInit {
         this.toastr.danger('', 'Něco se pokazilo, zkuste akci opakovat později.')
       }
     }, err => {
-      console.log(err);
+      this.toastr.danger(err, 'Během načítání obrázků došlo k chybě');
     })
   }
 

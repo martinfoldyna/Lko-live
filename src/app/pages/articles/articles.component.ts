@@ -49,11 +49,10 @@ export class ArticlesComponent implements OnInit {
   loadArticles() {
     this.articlesService.loadArticles().subscribe(articles => {
       this.allArticles = articles;
-      console.log(this.allArticles);
 
       this.articlesLoaded = Promise.resolve(true);
     }, err => {
-      console.log(err);
+      this.toaster.danger(err.stringify(), 'Během načítání příspěvků došlo k chybě.');
     })
   }
 

@@ -61,7 +61,6 @@ export class UserAuthoriseComponent implements OnInit {
   onEdit(event) {
     this.localAuthService.authorise(event.data._id).subscribe(response => {
       if(response) {
-        console.log(response);
         this.loadUsers();
         window.location.reload()
       }
@@ -70,7 +69,6 @@ export class UserAuthoriseComponent implements OnInit {
 
   onDelete(event) {
     this.userService.remove(event.data._id).subscribe(user => {
-      console.log(user);
       this.loadUsers()
       window.location.reload()
     })

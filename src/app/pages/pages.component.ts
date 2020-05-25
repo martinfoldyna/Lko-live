@@ -25,7 +25,6 @@ export class PagesComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    console.log(this.menu)
     if(this.userService.getUser().role !== "admin") {
       this.menu[4].hidden = true;
       this.menu[5].hidden = true;

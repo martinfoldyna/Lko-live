@@ -17,16 +17,6 @@ const routes: Routes = [{
       component: DashboardComponent,
     },
     {
-      path: 'photos',
-      loadChildren: () => import('./photos/photos.module')
-        .then(m => m.PhotosModule),
-    },
-    {
-      path: 'articles',
-      loadChildren: () => import('./articles/articles.module')
-        .then(m => m.ArticlesModule),
-    },
-    {
       path: 'subjects',
       loadChildren: () => import('./subjects/subjects.module')
         .then(m => m.SubjectsModule),

@@ -65,7 +65,6 @@ export class DrawingsComponent implements OnInit {
                 });
             }
           });
-          console.log('galleryImages: ', this.galleryImages);
           this.groupedImages[thisGroup] = this.galleryImages;
           this.galleryImages = new Array<NgxGalleryImage>();
         }
@@ -76,7 +75,7 @@ export class DrawingsComponent implements OnInit {
         this.toastr.danger('', 'Něco se pokazilo, zkuste akci opakovat později.')
       }
     }, err => {
-      console.log(err);
+      this.toastr.danger(err, 'Chyba')
     });
   }
 

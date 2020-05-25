@@ -18,7 +18,6 @@ export class LightboxComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.image)
   }
 
   close() {

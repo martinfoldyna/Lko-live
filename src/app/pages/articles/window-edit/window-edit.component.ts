@@ -39,7 +39,6 @@ export class WindowEditComponent implements OnInit{
   }
 
   onKeyUp(textarea?) {
-    console.log(this.newArticle.body);
     this.articleWasUpdated = (this.newArticle.title !== this.article.title || textarea.value !== this.article.body);
     if(textarea) this.newArticle.body = textarea.value;
 
@@ -47,16 +46,13 @@ export class WindowEditComponent implements OnInit{
 
   edit() {
     this.fetchingData = true;
-    console.log('waay');
     this.articlesService.updateArticle(this.newArticle).subscribe(data => {
-      console.log(data);
       if (data) {
         this.fetchingData = false;
         this.toastr.success('', `Příspěvek \"${this.newArticle.title}\" upraven!`)
         this.dialogRef.close(true);
       }
     }, err => {
-      console.log(err);
       this.fetchingData = false;
       this.dialogRef.close(false);
     });

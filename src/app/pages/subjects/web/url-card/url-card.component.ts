@@ -36,8 +36,7 @@ export class UrlCardComponent implements OnInit {
 
   deleteArticle(id) {
     this.generalService.delete(environment.models.article, id).subscribe(result => {
-      if(result) {
-        console.log(result);
+      if (result) {
         this.loadVideos.emit();
         this.toastr.success('Příspěvek byl úspěšně smazán!', 'Smazáno');
       }
@@ -50,14 +49,5 @@ export class UrlCardComponent implements OnInit {
       this.loadVideos.emit()
     });
   }
-
-  // editArticle(updatedPost) {
-  //   this.postService.updateArticle(updatedPost).subscribe(result => {
-  //     if(result) {
-  //       this.toastr.success('Příspěvek byl úspěšně upraven!', 'Upraven!');
-  //       this.loadVideos.emit()
-  //     }
-  //   })
-  // }
 
 }
