@@ -6,6 +6,5 @@ export const Config = {
   google: {
     providerID: '752176834537-n6n0f6q82e1v69kv1q333fc7m0ubkue2.apps.googleusercontent.com', // Klíč pro Google přihlášení
   },
-  // apiUrl: 'https://lyceum.api.pslib.cloud/', // URL k api
-  apiUrl: 'http://localhost:3000/api/', // URL k api
+  apiUrl: 'https://lyceum.pslib.cloud/api/', // URL k api
 }
