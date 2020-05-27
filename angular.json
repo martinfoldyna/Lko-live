@@ -22,11 +22,13 @@
               "src/assets",
               "src/favicon.ico",
               "src/favicon.png",
+              "src/Web.config",
               {
                 "glob": "**/*",
                 "input": "node_modules/leaflet/dist/images",
                 "output": "/assets/img/markers"
-              }
+              },
+
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
@@ -120,6 +122,7 @@
               "src/assets",
               "src/favicon.ico",
               "src/favicon.png",
+              "src/Web.config",
               {
                 "glob": "**/*",
                 "input": "node_modules/leaflet/dist/images",
